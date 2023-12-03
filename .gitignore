@@ -4,3 +4,7 @@ _build/
 *.exe
 *.out
 *.o
+_copy.ml
+inputs/*.txt
+!inputs/0_1.txt
+answers.txt
