@@ -9,7 +9,6 @@ let data =
   "inputs/2_1.txt"
   |> read_lines
   |> List.map (fun s ->
-    (* let id = Scanf.scanf "Game %d: " (fun x -> x) s in *)
     let parts = String.split_on_char ':' s in
     let id = Scanf.sscanf (List.hd parts) "Game %d" (fun x -> x) in
     let games = 
@@ -29,10 +28,12 @@ let data =
             let name = List.tl parts |> List.hd in
             (name, count)
           ) in
+        let extract name = 
+          get_or_default 0 (List.assoc_opt name items) in
         (
-            get_or_default 0 (List.assoc_opt "red" items),
-            get_or_default 0 (List.assoc_opt "green" items),
-            get_or_default 0 (List.assoc_opt "blue" items)
+          extract "red",
+          extract "green",
+          extract "blue"
         )
       )
     )
