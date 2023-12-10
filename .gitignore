@@ -8,3 +8,7 @@ _copy.ml
 inputs/*.txt
 !inputs/0_1.txt
 answers.txt
+*.py
+*.zip
+test/
+*_copy*

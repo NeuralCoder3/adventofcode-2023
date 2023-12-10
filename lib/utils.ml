@@ -154,3 +154,7 @@ let rec takeDrop n = function
     let (xs', xs'') = takeDrop (n - 1) xs in
     (x :: xs', xs'')
   | xs -> ([], xs)
+
+let dropLast xs = List.rev (List.tl (List.rev xs)) 
+let zipNext xs =
+  List.combine (dropLast xs) (List.tl xs)

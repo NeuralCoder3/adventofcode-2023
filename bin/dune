@@ -2,6 +2,7 @@
  (public_name aoc)
  (name main)
  (libraries utils str
+  bignum
   ; lp lp-glpk z3 
  ))
 

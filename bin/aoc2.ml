@@ -1,10 +1,5 @@
 open Utils
 
-let get_or_default a o = 
-  match o with
-  | Some v -> v
-  | None -> a
-
 let data = 
   "inputs/2_1.txt"
   |> read_lines
@@ -28,8 +23,7 @@ let data =
             let name = List.tl parts |> List.hd in
             (name, count)
           ) in
-        let extract name = 
-          get_or_default 0 (List.assoc_opt name items) in
+        let extract name = Option.value ~default:0 (List.assoc_opt name items) in
         (
           extract "red",
           extract "green",
