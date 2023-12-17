@@ -105,7 +105,7 @@ let memo f =
       y
 
 (* recursive closure with lists instead of hashtable *)
-let memo_rec f =
+let memo_rec_list f =
   let m = ref [] in
   let rec g x =
     try
@@ -114,6 +114,18 @@ let memo_rec f =
     Not_found ->
       let y = f g x in
         m := (x, y) :: !m ;
+        y
+  in
+    g
+let memo_rec f =
+  let m = Hashtbl.create 10000 in
+  let rec g x =
+    try
+      Hashtbl.find m x
+    with
+    Not_found ->
+      let y = f g x in
+        Hashtbl.add m x y ;
         y
   in
     g
@@ -158,3 +170,19 @@ let rec takeDrop n = function
 let dropLast xs = List.rev (List.tl (List.rev xs)) 
 let zipNext xs =
   List.combine (dropLast xs) (List.tl xs)
+
+let map_progress f xs =
+  let start_time = Sys.time () in
+  let interval = max 1 (List.length xs / 100) in
+  List.mapi (fun i x ->
+    (if i>0 && i mod interval = 0 then
+      let now = Sys.time () in
+      let elapsed = now -. start_time in
+      let estimated = elapsed /. (float_of_int (i+1)) *. (float_of_int (List.length xs)) in
+      Printf.printf "%d%% (%d/%d) elapsed: %.2fs estimated: %.2fs remaining: %.2fs\n%!" (i*100 / List.length xs) i (List.length xs) elapsed estimated (estimated -. elapsed));
+    f x
+  ) xs
+
+let rec transpose = function
+  | [] | []::_ -> []
+  | m -> List.map List.hd m :: transpose (List.map List.tl m)
